@@ -1,0 +1,60 @@
+use bd_01;
+-- Tabla FUNCIONARIOS
+CREATE TABLE FUNCIONARIOS (
+    id_funcionario INT PRIMARY KEY AUTO_INCREMENT,
+    tipo_identificacion VARCHAR(20) NOT NULL,
+    numero_identificacion VARCHAR(20) NOT NULL UNIQUE,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    estado_civil VARCHAR(15),
+    sexo CHAR(1),
+    direccion VARCHAR(100),
+    telefono VARCHAR(15),
+    fecha_nacimiento DATE
+);
+
+-- Tabla FAMILIARES
+CREATE TABLE FAMILIARES (
+    id_familiar INT PRIMARY KEY AUTO_INCREMENT,
+    id_funcionario INT NOT NULL,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    rol VARCHAR(30) NOT NULL,
+    fecha_nacimiento DATE,
+    FOREIGN KEY (id_funcionario) REFERENCES FUNCIONARIOS(id_funcionario) ON DELETE CASCADE
+);
+
+-- Tabla INFORMACION_ACADEMICA
+CREATE TABLE INFORMACION_ACADEMICA (
+    id_info_academica INT PRIMARY KEY AUTO_INCREMENT,
+    id_funcionario INT NOT NULL,
+    universidad VARCHAR(100) NOT NULL,
+    nivel_estudio VARCHAR(50) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    FOREIGN KEY (id_funcionario) REFERENCES FUNCIONARIOS(id_funcionario) ON DELETE CASCADE
+);
+
+-- Insertar datos de prueba en FUNCIONARIO
+INSERT INTO FUNCIONARIOS  (tipo_identificacion, numero_identificacion, nombres, apellidos, estado_civil, sexo, direccion, telefono, fecha_nacimiento)
+VALUES 
+('Cédula', '123456789', 'Juan', 'Pérez', 'Soltero', 'M', 'Calle 123 #45-67', '3101234567', '1985-05-15'),
+('Cédula', '987654321', 'María', 'Gómez', 'Casada', 'F', 'Carrera 56 #12-34', '3157654321', '1990-08-22'),
+('Pasaporte', 'AB123456', 'Carlos', 'Rodríguez', 'Divorciado', 'M', 'Avenida 7 #8-90', '3209876543', '1978-11-30');
+
+-- Insertar familiares
+INSERT INTO FAMILIARES (id_funcionario, nombres, apellidos, rol, fecha_nacimiento)
+VALUES 
+(1, 'Ana', 'Pérez', 'Hermana', '1988-03-10'),
+(1, 'Pedro', 'Pérez', 'Padre', '1955-07-20'),
+(2, 'Luis', 'Gómez', 'Esposo', '1988-12-05'),
+(2, 'Sofía', 'Gómez', 'Hija', '2015-04-18');
+
+-- Insertar información académica
+INSERT INTO INFORMACION_ACADEMICA (id_funcionario, universidad, nivel_estudio, titulo)
+VALUES 
+(1, 'Universidad de Antioquia', 'Pregrado', 'Ingeniero de Sistemas'),
+(1, 'Universidad Nacional', 'Maestría', 'Magister en Seguridad Informática'),
+(2, 'Universidad EAFIT', 'Pregrado', 'Licenciada en Educación'),
+(3, 'Universidad de Medellín', 'Pregrado', 'Administrador de Empresas');
+
+select * from familiares f 
